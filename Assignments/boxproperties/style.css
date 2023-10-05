@@ -1,0 +1,19 @@
+.body {
+    background-color: rgb(4, 204, 41);
+}
+p{
+    background-color: rgb(131, 66, 236);
+    border: 3px solid rgb(166, 247, 3);
+    padding: 5px;
+    margin: 40px;
+}
+img {
+    cursor: pointer;
+    float: left;
+    padding: 3px;
+    margin: 3px 5px;
+    border: 6px dashed transparent;
+}
+img:hover{
+    border: 6px rgb(56, 3, 20) dashed;
+}
