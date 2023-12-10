@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sum Calculator</title>
+</head>
+<body>
+
+<script>
+function calculateSumOfNumbers() {
+  let totalSum = 0;
+
+  while (true) {
+    let userInput = prompt("Enter a positive number (enter 0 to finish):");
+    userInput = parseFloat(userInput);
+
+    if (isNaN(userInput)) {
+      alert("Invalid input. Please enter a valid number.");
+    } else if (userInput < 0) {
+      alert("Please enter a positive number.");
+    } else {
+      totalSum += userInput;
+    }
+
+    if (userInput === 0) {
+      break;
+    }
+  }
+
+  alert(`The sum of the numbers you wrote is equal to ${totalSum}.`);
+}
+
+calculateSumOfNumbers();
+</script>
+
+</body>
+</html>
