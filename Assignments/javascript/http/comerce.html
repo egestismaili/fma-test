@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #333;
+            color: #fff;
+            padding: 1em;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .product-card {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+
+        .product-card:hover {
+            transform: scale(1.05);
+        }
+
+        .product-image {
+            width: 100vh;
+            max-height: 40rem;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background-color: #fff;
+            max-width: 600px;
+            overflow-y: auto;
+            margin: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+            max-height: 80vh;
+
+
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+        .remove-photo-btn {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* Remove photo after clicking the "View Details" button */
+        .no-photo {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>E-commerce Website</h1>
+    </header>
+
+    <div class="container" id="product-container"></div>
+
+    <div class="popup" id="popup">
+        <div class="popup-content" id="popup-content">
+            <span class="close-btn" onclick="closePopup()">X</span>
+            <div id="popup-data"></div>
+            <button class="remove-photo-btn" onclick="removePhoto()">Remove Photo</button>
+        </div>
+    </div>
+
+    <script>
+        const productContainer = document.getElementById('product-container');
+        const popup = document.getElementById('popup');
+        const popupContent = document.getElementById('popup-content');
+        const popupData = document.getElementById('popup-data');
+
+        
+        fetch('https://fakestoreapi.com/products')
+            .then(response => response.json())
+            .then(products => {
+                products.forEach(product => {
+                    const card = document.createElement('div');
+                    card.classList.add('product-card');
+                    card.innerHTML = `
+            <img src="${product.image}" alt="${product.title}" class="product-image">
+            <div class="product-info">
+              <h2>${product.title}</h2>
+              <p>${product.description}</p>
+              <p>Price: $${product.price}</p>
+              <button onclick="openPopup(${product.id}, this)">View Details</button>
+            </div>
+          `;
+                    productContainer.appendChild(card);
+                });
+            });
+
+        function openPopup(productId, button) {
+            fetch(`https://fakestoreapi.com/products/${productId}`)
+                .then(response => response.json())
+                .then(productDetails => {
+                    
+                    const productCard = button.closest('.product-card');
+                    const productImage = productCard.querySelector('.product-image');
+                    productImage.classList.add('no-photo');
+
+                    popupData.innerHTML = `
+            <h2>${productDetails.title}</h2>
+            <p>${productDetails.description}</p>
+            <p>Price: $${productDetails.price}</p>
+            <img src="${productDetails.image}" alt="${productDetails.title}" style="max-width: 100%;">
+          `;
+                    popup.style.display = 'flex';
+                });
+        }
+
+        function closePopup() {
+            popup.style.display = 'none';
+        }
+
+        function removePhoto() {
+            const productImage = popupContent.querySelector('.product-image');
+            productImage.classList.add('no-photo');
+        }
+    </script>
+
+</body>
+
+</html>
